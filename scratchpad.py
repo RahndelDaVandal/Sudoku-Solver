@@ -1,26 +1,19 @@
-import numpy as np
-from board import Board
+from rich.console import Console
+from rich.table import Table
+from rich import box
 
 
-def gen_test_board() -> np.ndarray:
-    nums = [1, 2, 3]
-    line = []
-    board = []
+table = Table(
+    title="Sudoku-Solver", show_header=False, box=box.DOUBLE_EDGE, border_style="-"
+)
 
-    for _ in range(3):
-        for _ in range(len(nums)):
-            for n in nums:
-                for i in range(3):
-                    line.append(n)
-            board.append(line)
-            line = []
-        nums = [i + 3 for i in nums]
+table.add_column("")
+table.add_column("")
+table.add_column("")
 
-    return np.array(board)
+table.add_row("1", "2", "3")
+table.add_row("4", "5", "6")
+table.add_row("7", "8", "9")
 
-
-b = gen_test_board()
-
-s = Board(b)
-
-s.show()
+console = Console()
+console.print(table)
