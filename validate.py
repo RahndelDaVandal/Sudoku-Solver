@@ -3,7 +3,7 @@ from board import Board
 
 
 def valid(slice: np.ndarray) -> bool:
-    s = slice.flatten()
+    s = slice[np.nonzero(slice)].flatten()
 
     for i in s:
         if not isinstance(i, np.int64):
@@ -17,7 +17,14 @@ def valid(slice: np.ndarray) -> bool:
 
 
 def validate(board: Board):
-    for item in board.get_validation_set():
+    for item in board.test_sets:
         if not valid(item):
             return False
     return True
+
+
+def board_not_valid(board: Board):
+    for item in board.test_sets:
+        if not valid(item):
+            return True
+    return False
