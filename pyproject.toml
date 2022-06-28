@@ -6,6 +6,7 @@ authors = ["Connor Sahleen <Connor.Sahleen@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+rich = "^12.4.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

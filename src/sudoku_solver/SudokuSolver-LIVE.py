@@ -51,7 +51,7 @@ class Board(Board):
         view = Panel(
             Text(str(self._draw_board()), justify='center'),
             title="[bold green]Sudoku Solver",
-            subtitle="[bold green]by: Connor Sahleen",
+            # subtitle="[bold green]by: Connor Sahleen",
             # box=box.SIMPLE,
             # padding=2,
         )
