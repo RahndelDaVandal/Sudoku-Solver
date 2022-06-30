@@ -15,10 +15,18 @@ def load_json(file_path: str) -> Any:
         print(f"ERROR - {file_path} Not Found!")
 
 
-def json_file_to_np(file_path: str) -> Any:
+def load_puzzle(file_path: str) -> Any:
     try:
         with open(file_path, "r") as file:
-            return np.array(json.load(file))
+            return np.array(json.load(file)["puzzle"])
+    except FileNotFoundError:
+        print(f"ERROR - {file_path} Not Found!")
+
+
+def load_solution(file_path: str) -> Any:
+    try:
+        with open(file_path, "r") as file:
+            return np.array(json.load(file)["solution"])
     except FileNotFoundError:
         print(f"ERROR - {file_path} Not Found!")
 

@@ -21,27 +21,31 @@ l = Logger()
 
 
 def verify_solution(board: Board) -> bool:
-    l('---------------------------------------------------')
-    l('              VERIFYING SOLVED PUZZLE')
-    l('---------------------------------------------------')
+    l("---------------------------------------------------")
+    l("              VERIFYING SOLVED PUZZLE")
+    l("---------------------------------------------------")
     is_valid = validate(board)
-    l(f'PUZZLE is_valid = {is_valid}\n')
-    l('---------------------------------------------------')
+    l(f"PUZZLE is_valid = {is_valid}\n")
+    l("---------------------------------------------------")
 
 
 def verify_against_original_solution(puzzle: np.ndarray, solution: np.ndarray) -> bool:
     does_match = True
-    l('---------------------------------------------------')
-    l('  VERIFY SOLVED PUZZLE AGAINST ORIGINAL SOLUTION')
-    l('---------------------------------------------------')
+    l("---------------------------------------------------")
+    l("  VERIFY SOLVED PUZZLE AGAINST ORIGINAL SOLUTION")
+    l("---------------------------------------------------")
     for idx, val in np.ndenumerate(puzzle):
         if puzzle[idx] != solution[idx]:
-            l(f'puzzle[{idx}] = {puzzle[idx]} | solution[{idx}] = {solution[idx]} | {puzzle[idx] == solution[idx]}')
+            l(
+                f"puzzle[{idx}] = {puzzle[idx]} | solution[{idx}] = {solution[idx]} | {puzzle[idx] == solution[idx]}"
+            )
             does_match = False
-        l(f'puzzle[{idx}] = {puzzle[idx]} | solution[{idx}] = {solution[idx]} | {puzzle[idx] == solution[idx]}')
-    l('---------------------------------------------------')
-    l(f'PUZZLE DOES MATCH ORIGINAL SOLUTION = {does_match}')
-    l('---------------------------------------------------')
+        l(
+            f"puzzle[{idx}] = {puzzle[idx]} | solution[{idx}] = {solution[idx]} | {puzzle[idx] == solution[idx]}"
+        )
+    l("---------------------------------------------------")
+    l(f"PUZZLE DOES MATCH ORIGINAL SOLUTION = {does_match}")
+    l("---------------------------------------------------")
     return does_match
 
 
@@ -49,7 +53,7 @@ class Board(Board):
     def update(self):
 
         view = Panel(
-            Text(str(self._draw_board()), justify='center'),
+            Text(str(self._draw_board()), justify="center"),
             title="[bold green]Sudoku Solver",
             subtitle="[bold green]by: Connor Sahleen",
             # box=box.SIMPLE,
@@ -81,7 +85,7 @@ def live_backtrack(board: Board):
 
         while [True for i in empty_cells if True in i]:
             live.update(board.update())
-            
+
             c = empty_cells[idx]
             val = board.board[c[0]]
 
@@ -111,7 +115,7 @@ def live_backtrack(board: Board):
                         idx -= 1
                         c = empty_cells[idx]
                         val = board.board[c[0]]
-                    
+
                     val += 1
                     board.board[c[0]] = val
 
