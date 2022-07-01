@@ -59,7 +59,7 @@ def generate() -> dict:
     for p in sample(range(squares), empties):
         puzzle[p // side][p % side] = 0
 
-    return {"puzzle": puzzle, "solution": solution}
+    return {"puzzle": sum(puzzle, []), "solution": sum(solution, [])}
 
 
 def save_to_json(puzzle: dict, file_path: str) -> None:

@@ -1,6 +1,15 @@
 from typing import List
 from dataclasses import dataclass, field
+
+from rich.console import Console
+from rich.text import Text
+from rich.panel import Panel
+from rich import box
+
+from utils import load_json
 from validate import validate
+
+console = Console()
 
 
 @dataclass
@@ -9,11 +18,24 @@ class Board:
     blanks: list = field(init=False)
 
     def __post_init__(self) -> None:
-        self.blanks = [idx for idx, val in enumerate(self.board) if val == 0]
+        self.blanks = [i for i, v in enumerate(self.board) if v == 0]
+
+    @property
+    def board2d(self) -> List[list]:
+        _2d = []
+        start = 0
+        end = 9
+
+        for i in range(9):
+            _2d.append(self.board[start:end])
+            start = end
+            end += 9
+
+        return _2d
 
     @property
     def validation_sets(self) -> List[list]:
-        validation_sets = [self._get_blocks(), self._get_cols(), self._get_rows()]
+        validation_sets = [self.get_blocks(), self.get_cols(), self.get_rows()]
         return sum(validation_sets, [])
 
     @property
@@ -24,7 +46,10 @@ class Board:
 
     @property
     def has_violations(self) -> bool:
-        return validate(self.validation_sets)
+        less_zeros = []
+        for s in self.validation_sets:
+            less_zeros.append([i for i in s if i != 0])
+        return not validate(less_zeros)
 
     @property
     def has_blanks(self) -> bool:
@@ -33,36 +58,102 @@ class Board:
                 return True
         return False
 
-    def _get_blocks(self) -> List[list]:
+    def get_blocks(self) -> List[list]:
         slices = [slice(i * 3, i * 3 + 3) for i in range(3)]
 
         blocks = []
 
         for r in slices:
             for c in slices:
-                blocks.append(sum([b[c] for b in self.board[r]], []))
+                blocks.append(sum([b[c] for b in self.board2d[r]], []))
 
         return blocks
 
-    def _get_cols(self) -> List[list]:
+    def get_cols(self) -> List[list]:
         cols = []
 
-        for c in range(len(test)):
+        for c in range(len(self.board2d)):
             col = []
-            for r in self.board:
+            for r in self.board2d:
                 col.append(r[c])
             cols.append(col)
 
         return cols
 
-    def _get_rows(self) -> List[list]:
-        return self.board
-
-    def _draw_board(self) -> str:
-        ...
+    def get_rows(self) -> List[list]:
+        return self.board2d
 
     def show(self) -> None:
-        print(self._draw_board())
+        bg = load_json("bg.json")
+
+        cells = [i for i, v in enumerate(bg) if v == "."]
+
+        blanks = [v for i, v in enumerate(cells) if i in self.blanks]
+
+        for i, v in enumerate(self.board):
+            if v == 0:
+                bg[cells[i]] = " "
+            else:
+                bg[cells[i]] = v
+
+        text = Text()
+        for idx, char in enumerate(bg):
+            if idx in blanks:
+                text.append(str(char), style="yellow1")
+            else:
+                if isinstance(char, int):
+                    text.append(str(char), style="deep_sky_blue1")
+                else:
+                    text.append(str(char), style="grey100")
+
+        console.print(text)
+
+    def _show(self) -> Text:
+        bg = load_json("bg.json")
+
+        cells = [i for i, v in enumerate(bg) if v == "."]
+
+        blanks = [v for i, v in enumerate(cells) if i in self.blanks]
+
+        for i, v in enumerate(self.board):
+            if v == 0:
+                bg[cells[i]] = " "
+            else:
+                bg[cells[i]] = v
+
+        text = Text()
+        for idx, char in enumerate(bg):
+            if idx in blanks:
+                text.append(str(char), style="yellow1")
+            else:
+                if isinstance(char, int):
+                    text.append(str(char), style="deep_sky_blue1")
+                else:
+                    text.append(str(char), style="grey100")
+        return(text)
+
+    def update(self):
+        view = Panel(
+            Text(str(self._show()), justify="center"),
+            title="[bold green]Sudoku Solver",
+            # subtitle="[bold green]by: Connor Sahleen",
+            box=box.SIMPLE,
+            # padding=2,
+        )
+        return Panel(view, box=box.SIMPLE, expand=True)
 
     def __repr__(self) -> str:
-        return self._draw_board()
+        string = ""
+
+        for r in self.board2d:
+            for c in r:
+                if c == 0:
+                    string += ". "
+                else:
+                    string += f"{c} "
+            string += "\n"
+
+        return string
+
+    def __len__(self) -> int:
+        return len(self.board)
