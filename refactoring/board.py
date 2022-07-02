@@ -99,12 +99,12 @@ class Board:
         text = Text()
         for idx, char in enumerate(bg):
             if idx in blanks:
-                text.append(str(char), style="yellow1")
+                text.append(str(char), style="deep_sky_blue1")
             else:
                 if isinstance(char, int):
-                    text.append(str(char), style="deep_sky_blue1")
+                    text.append(str(char), style="grey74")
                 else:
-                    text.append(str(char), style="grey100")
+                    text.append(str(char), style="grey7")
 
         console.print(text)
 
@@ -130,7 +130,7 @@ class Board:
                     text.append(str(char), style="deep_sky_blue1")
                 else:
                     text.append(str(char), style="grey100")
-        return(text)
+        return text
 
     def update(self):
         view = Panel(
