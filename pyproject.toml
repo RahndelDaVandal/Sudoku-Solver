@@ -3,13 +3,16 @@ name = "sudoku-solver"
 version = "0.1.0"
 description = ""
 authors = ["Connor Sahleen <Connor.Sahleen@gmail.com>"]
+readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 rich = "^12.4.4"
+typer = "^0.4.2"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
+pytest = "^6.2"
+black = "^22.6.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
