@@ -1,47 +1,54 @@
-# sudoku_solver.sudoku.py
-from pathlib import Path
-from dataclasses import dataclass, field
+# sudoku_solver.sudoku
+from dataclasses import dataclass
+
+from sudoku.board import Board
+from sudoku.loader import Loader, FromSTR
+from sudoku.solver import Solver, BackTrack
 
 
+# TODO - add documentation
 @dataclass
 class Sudoku:
-    board: list[int] = field(init=False)
-    empties: list[int] = field(init=False)
+    _puzzle: Board = None
+    _solution: Board = None
+    _loader: Loader = None
+    _solver: Solver = None
 
-    def load(self, board: list[int]) -> None:
-        if not self._load_validator(board):
-            return
-        self.board = board
+    def __post_init__(self) -> None:
+        if self._loader is None:
+            self._loader = FromSTR()
+        if self._solver is None:
+            self._solver = BackTrack()
 
-    def load_from_file(self, file_path: str) -> None:
-        if not Path(file_path).is_file():
-            raise FileNotFoundError
-        with open(file_path, "r") as file:
-            board = file.readline()
+    @property
+    def loader(self) -> Loader:
+        return self._loader
 
-        if not self._load_validator(board):
-            return
+    @loader.setter
+    def loader(self, loader: Loader) -> None:
+        self._loader = loader
 
-        self.board = board
+    @property
+    def solver(self) -> Solver:
+        return self._solver
 
-    def _load_validator(self, board: list[int]) -> bool:
-        if not isinstance(board, list):
-            raise ValueError("Invalid Value for Board. Must be type list[int]")
+    @solver.setter
+    def solver(self, solver: Solver) -> None:
+        self._solver = solver
 
-        for item in board:
-            if not isinstance(item, int):
-                raise ValueError(
-                    "Invalid Value in Board. All items in list must be type int"
-                )
-            if item < 0 or item > 9:
-                raise ValueError(
-                    "Invalid Value in Board. All items in list must be int 0-9"
-                )
+    @property
+    def puzzle(self) -> list[int]:
+        return self._puzzle
 
-        return True
+    @property
+    def solution(self) -> list[int]:
+        if self._solution is None:
+            # TODO - Should this raise an exception?
+            print("No soluiton, please run Sudoku.solve()")
+        return self._solution
 
-    def _display_str(self) -> str:
-        ...
+    def load(self, target: str) -> None:
+        self._puzzle = self._loader.load(target)
 
-    def __repr__(self) -> str:
-        ...
+    def solve(self) -> Board:
+        self._solution = self._solver.solve(self._puzzle)
