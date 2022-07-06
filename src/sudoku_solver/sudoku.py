@@ -26,16 +26,20 @@ class Sudoku:
 
     def _load_validator(self, board: list[int]) -> bool:
         if not isinstance(board, list):
-            raise ValueError('Invalid Value for Board. Must be type list[int]')
+            raise ValueError("Invalid Value for Board. Must be type list[int]")
 
         for item in board:
             if not isinstance(item, int):
-                raise ValueError("Invalid Value in Board. All items in list must be type int")
+                raise ValueError(
+                    "Invalid Value in Board. All items in list must be type int"
+                )
             if item < 0 or item > 9:
-                raise ValueError("Invalid Value in Board. All items in list must be int 0-9")
+                raise ValueError(
+                    "Invalid Value in Board. All items in list must be int 0-9"
+                )
 
         return True
-        
+
     def _display_str(self) -> str:
         ...
 

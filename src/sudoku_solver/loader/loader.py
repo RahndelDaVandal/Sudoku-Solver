@@ -1,6 +1,6 @@
 # sudoku_solver.loader.py
 from dataclasses import dataclass, field
-from . strategy import Strategy, FromSRM
+from .strategy import Strategy, FromSRM
 
 
 @dataclass

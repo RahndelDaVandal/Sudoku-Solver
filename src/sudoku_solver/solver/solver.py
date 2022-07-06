@@ -5,7 +5,7 @@ from .strategy import Strategy, BackTrack
 
 @dataclass
 class Solver:
-    _strategy: Strategy = field(init=False, default=None)
+    _strategy: Strategy = field(default=None)
 
     def __post_init__(self) -> None:
         if self._strategy is None:
