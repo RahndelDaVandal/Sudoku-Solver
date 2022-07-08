@@ -17,3 +17,7 @@ class Board:
         # TODO Validate the loaded board here? or in loader?
         self._blanks = [i for i, v in enumerate(board) if v == 0]
         self._board = board
+
+    @property
+    def blanks(self) -> list[int]:
+        return self._blanks

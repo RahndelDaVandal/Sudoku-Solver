@@ -1,9 +1,9 @@
 # sudoku_solver.sudoku
 from dataclasses import dataclass
 
-from sudoku.board import Board
-from sudoku.loader import Loader, FromSTR
-from sudoku.solver import Solver, BackTrack
+from sudoku_solver.board import Board
+from sudoku_solver.loader import Loader, FromSTR
+from sudoku_solver.solver import Solver, BackTrack
 
 
 # TODO - add documentation
